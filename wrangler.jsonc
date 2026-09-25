@@ -1,0 +1,14 @@
+{
+  "name": "meowzshop",
+  "compatibility_date": "2026-09-25",
+  "assets": {
+    "directory": "./public"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "meowz-store",
+      "database_id": "55df2f8e-3784-4b63-9bda-6de2b0e63303"
+    }
+  ]
+}
