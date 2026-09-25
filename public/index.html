@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MeowZ Store</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080a10;color:#f4f7fb;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:1050px;margin:auto;padding:24px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0 34px}
+.logo{font-size:28px;font-weight:900}.logo span{opacity:.55;font-size:13px;margin-left:8px}
+.nav{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid #2a3140;background:#111722;color:#fff;border-radius:12px;padding:10px 14px}.primary{background:#fff;color:#080a10;border-color:#fff}
+.hero{padding:45px 0 30px}.hero h1{font-size:clamp(42px,9vw,78px);line-height:.95;margin:0 0 18px}.hero p{color:#9da7b7;max-width:650px;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:30px 0}.card{background:#10141d;border:1px solid #222a37;border-radius:18px;padding:20px}.card h3{margin:0 0 12px}.price{font-size:24px;font-weight:900;margin:12px 0 20px}.muted{color:#8993a3;font-size:13px}.panel{background:#0d1119;border:1px solid #252d3a;border-radius:18px;padding:22px;margin:20px 0}.hidden{display:none}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px;margin:10px 0}.field label{font-size:13px;color:#aab3c2}.field input,.field select{width:100%;background:#090c12;border:1px solid #293241;color:#fff;border-radius:11px;padding:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.msg{padding:12px;border-radius:10px;margin-top:10px;background:#151b25;color:#cbd3df}.ok{color:#74e2a1}.err{color:#ff8585}.intro{position:fixed;inset:0;background:#07090d;z-index:50;display:grid;place-items:center;transition:opacity .55s,visibility .55s}.intro.hide{opacity:0;visibility:hidden}.introbox{text-align:center}.introtitle{font-size:clamp(42px,12vw,90px);font-weight:950;letter-spacing:-4px}.introdev{color:#8e98a8;margin-top:10px}
+.license{padding:14px;background:#111722;border:1px solid #293241;border-radius:12px;margin:8px 0}.key{font-weight:900;letter-spacing:1px;word-break:break-all}
+footer{color:#687386;padding:40px 0;text-align:center}@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}}@media(max-width:500px){.wrap{padding:16px}.grid{grid-template-columns:1fr}.hero{padding-top:25px}header{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="intro" id="intro"><div class="introbox"><div class="introtitle">MeowZ Store</div><div class="introdev">Dev:Meow</div></div></div>
+
+<div class="wrap">
+<header>
+  <div class="logo">MeowZ Store <span>LICENSE</span></div>
+  <div class="nav">
+    <button class="btn" id="loginBtn">Đăng nhập</button>
+    <button class="btn hidden" id="logoutBtn">Đăng xuất</button>
+    <button class="btn hidden" id="mineBtn">License của tôi</button>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>License cho<br>MeowZ.</h1>
+  <p>Mua license trực tiếp, quản lý license trong tài khoản và nhận key sau khi thanh toán được hệ thống xác minh.</p>
+</section>
+
+<section>
+  <h2>Chọn gói</h2>
+  <div id="products" class="grid"><div class="muted">Đang tải...</div></div>
+</section>
+
+<section id="authPanel" class="panel hidden">
+  <h2 id="authTitle">Đăng nhập</h2>
+  <div class="row">
+    <div class="field"><label>Tài khoản hoặc Email</label><input id="identity" autocomplete="username"></div>
+    <div class="field"><label>Mật khẩu</label><input id="password" type="password" autocomplete="current-password"></div>
+  </div>
+  <div id="registerFields" class="hidden">
+    <div class="row">
+      <div class="field"><label>Username</label><input id="username" autocomplete="username"></div>
+      <div class="field"><label>Email</label><input id="email" type="email" autocomplete="email"></div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn primary" id="authSubmit">Đăng nhập</button>
+    <button class="btn" id="toggleAuth">Tạo tài khoản</button>
+    <button class="btn" id="closeAuth">Đóng</button>
+  </div>
+  <div id="authMsg"></div>
+</section>
+
+<section id="buyPanel" class="panel hidden">
+  <h2>Mua license</h2>
+  <div id="selectedProduct" class="msg"></div>
+  <div class="row">
+    <div class="field"><label>Nhà mạng</label><select id="carrier">
+      <option>Viettel</option><option>VinaPhone</option><option>MobiFone</option><option>Vietnamobile</option><option>Zing</option>
+    </select></div>
+    <div class="field"><label>Mệnh giá</label><select id="denomination">
+      <option value="10000">10.000đ</option><option value="20000">20.000đ</option><option value="50000">50.000đ</option><option value="100000">100.000đ</option><option value="200000">200.000đ</option><option value="500000">500.000đ</option>
+    </select></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Serial</label><input id="serial"></div>
+    <div class="field"><label>Mã thẻ</label><input id="cardCode" type="password"></div>
+  </div>
+  <div class="actions"><button class="btn primary" id="createOrder">Tạo đơn</button><button class="btn" id="closeBuy">Đóng</button></div>
+  <div id="buyMsg"></div>
+</section>
+
+<section id="minePanel" class="panel hidden"><h2>License của tôi</h2><div id="licenses"></div></section>
+<footer>MeowZ Store · Dev:Meow</footer>
+</div>
+
+<script src="./config.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+let products=[],selected=null,registerMode=false;
+
+function money(n){return new Intl.NumberFormat("vi-VN").format(n)+"đ"}
+function msg(el,text,ok=false){el.innerHTML='<div class="msg '+(ok?'ok':'err')+'">'+text+'</div>'}
+
+async function api(path,opt={}){
+  const r=await fetch((window.MEOWZ_CONFIG?.API_BASE||"")+path,{credentials:"include",...opt,
+    headers:{"content-type":"application/json",...(opt.headers||{})}});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(d.error||"Request failed");
+  return d;
+}
+
+async function load(){
+  try{const d=await api("/api/products");products=d.products||[];renderProducts()}catch(e){$("products").innerHTML='<div class="msg err">Không tải được sản phẩm: '+e.message+'</div>'}
+  await me();
+}
+function renderProducts(){
+  $("products").innerHTML=products.map(p=>`<div class="card"><h3>${p.name}</h3><div class="muted">${p.duration_days?`Thời hạn ${p.duration_days} ngày`:"Không giới hạn"}</div><div class="price">${money(p.price_vnd)}</div><button class="btn primary buy" data-id="${p.id}">Mua license</button></div>`).join("");
+  document.querySelectorAll(".buy").forEach(b=>b.onclick=()=>choose(Number(b.dataset.id)));
+}
+function choose(id){
+  selected=products.find(p=>p.id===id);
+  if(!selected)return;
+  if(!$("logoutBtn").classList.contains("hidden")) openBuy(); else openAuth();
+}
+function openAuth(){ $("authPanel").classList.remove("hidden"); $("authPanel").scrollIntoView({behavior:"smooth"}); }
+function openBuy(){
+  $("selectedProduct").textContent=`${selected.name} · ${money(selected.price_vnd)}`;
+  $("buyPanel").classList.remove("hidden"); $("buyPanel").scrollIntoView({behavior:"smooth"});
+}
+$("loginBtn").onclick=()=>{registerMode=false;syncAuth();openAuth()};
+$("logoutBtn").onclick=async()=>{await api("/api/auth/logout",{method:"POST"});location.reload()};
+$("mineBtn").onclick=()=>{loadLicenses();$("minePanel").classList.remove("hidden");$("minePanel").scrollIntoView({behavior:"smooth"})};
+$("closeAuth").onclick=()=>$("authPanel").classList.add("hidden");
+$("closeBuy").onclick=()=>$("buyPanel").classList.add("hidden");
+$("toggleAuth").onclick=()=>{registerMode=!registerMode;syncAuth()};
+function syncAuth(){
+  $("authTitle").textContent=registerMode?"Tạo tài khoản":"Đăng nhập";
+  $("authSubmit").textContent=registerMode?"Đăng ký":"Đăng nhập";
+  $("toggleAuth").textContent=registerMode?"Đã có tài khoản":"Tạo tài khoản";
+  $("registerFields").classList.toggle("hidden",!registerMode);
+}
+$("authSubmit").onclick=async()=>{
+  try{
+    if(registerMode){
+      const d=await api("/api/auth/register",{method:"POST",body:JSON.stringify({username:$("username").value,email:$("email").value,password:$("password").value})});
+      msg($("authMsg"),"Tạo tài khoản thành công.",true);setTimeout(()=>location.reload(),500);
+    }else{
+      await api("/api/auth/login",{method:"POST",body:JSON.stringify({identity:$("identity").value,password:$("password").value})});
+      location.reload();
+    }
+  }catch(e){msg($("authMsg"),e.message)}
+};
+$("createOrder").onclick=async()=>{
+  try{
+    const d=await api("/api/orders",{method:"POST",body:JSON.stringify({
+      product_id:selected.id,carrier:$("carrier").value,denomination_vnd:Number($("denomination").value),
+      card_serial:$("serial").value,card_code:$("cardCode").value
+    })});
+    msg($("buyMsg"),`Đã tạo đơn <b>${d.order.code}</b>. Hệ thống chưa cấp key cho tới khi Card2K xác minh thanh toán.`,true);
+  }catch(e){msg($("buyMsg"),e.message)}
+};
+async function me(){
+  try{
+    const d=await api("/api/auth/me");
+    $("loginBtn").classList.toggle("hidden",d.authenticated);
+    $("logoutBtn").classList.toggle("hidden",!d.authenticated);
+    $("mineBtn").classList.toggle("hidden",!d.authenticated);
+  }catch{}
+}
+async function loadLicenses(){
+  try{
+    const d=await api("/api/licenses");
+    $("licenses").innerHTML=(d.licenses||[]).map(x=>`<div class="license"><div class="key">${x.license_key}</div><div class="muted">${x.product_name} · Đơn ${x.order_code}</div></div>`).join("")||'<div class="muted">Chưa có license.</div>';
+  }catch(e){$("licenses").innerHTML='<div class="msg err">'+e.message+'</div>'}
+}
+setTimeout(()=>$("intro").classList.add("hide"),1700);
+load();
+</script>
+</body>
+</html>
